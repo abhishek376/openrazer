@@ -38,7 +38,7 @@ ATTRS{idProduct}=="0215", \
 ENV{ID_RAZER_CHROMA}!="1", GOTO="razer_end"
 
 # Set permissions if this is an input node
-SUBSYSTEM=="input|hid", GROUP:="plugdev"
+SUBSYSTEM=="input|hid", GROUP:="wheel"
 
 # We're done unless it's the hid node
 SUBSYSTEM!="hid", GOTO="razer_end"

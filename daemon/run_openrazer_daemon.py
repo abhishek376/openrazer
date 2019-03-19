@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 import argparse
 import os
@@ -110,9 +110,9 @@ def install_example_config_file(config_file):
         if os.path.exists(EXAMPLE_CONF_FILE):
             shutil.copy(EXAMPLE_CONF_FILE, config_file)
         else:
-            print('Cant find "{0}"'.format(EXAMPLE_CONF_FILE), file=sys.stderr)
-    except NotADirectoryError as e:
-        print("Failed to create {}".format(e.filename), file=sys.stderr)
+            print('Cant find "{0}"'.format(EXAMPLE_CONF_FILE))
+    except Exception as e:
+        print("Failed to create {}".format(config_file))
         sys.exit(1)
 
 
@@ -156,13 +156,14 @@ def run():
     # and does not make them appear on stdout/stderr. If we're in foreground
     # mode, override that logger with our own.
     if args.foreground:
-        logger = logging.getLogger('run-daemon')
-        if args.verbose:
-            logger.setLevel(logging.DEBUG)
+        logger = logging
 
     install_example_config_file(args.config)
 
-    os.makedirs(args.run_dir, exist_ok=True)
+    try:
+      os.makedirs(args.run_dir)
+    except Exception as e:
+      print e
     daemon = Daemonize(app="openrazer-daemon",
                        pid=os.path.join(args.run_dir, "openrazer-daemon.pid"),
                        action=run_daemon,
